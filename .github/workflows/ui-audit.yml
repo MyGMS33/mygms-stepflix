@@ -1,0 +1,67 @@
+name: StepFlix UI audit
+
+on:
+  push:
+    branches: ["feat/stepflix-v1-1", "main"]
+    paths:
+      - "static/**"
+      - ".github/workflows/ui-audit.yml"
+  pull_request:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install Playwright
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --save-dev playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Start StepFlix
+        run: |
+          python3 -m http.server 8000 -d static >/tmp/stepflix-http.log 2>&1 &
+          echo $! > /tmp/stepflix-http.pid
+          sleep 2
+      - name: Audit mobile UI
+        run: |
+          cat > /tmp/audit.mjs <<'JS'
+          import { chromium } from "playwright";
+          const browser = await chromium.launch({headless:true});
+          const page = await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});
+          const errors=[];
+          page.on("pageerror",e=>errors.push(String(e)));
+          page.on("console",m=>{if(m.type()==="error") errors.push(m.text())});
+          await page.goto("http://127.0.0.1:8000/",{waitUntil:"networkidle"});
+          await page.evaluate(()=>{
+            localStorage.setItem("stepflix.settings.v1",JSON.stringify({daily_step_goal:10000,current_weight_kg:93,target_weight_kg:80}));
+            localStorage.setItem("stepflix.sessions.v1",JSON.stringify([
+              {id:"a1",started_at:"2026-09-25T20:00",duration_minutes:45,distance_km:3.2,l20_calories:220,steps:4200,incline_percent:0,weight_kg:93},
+              {id:"a2",started_at:"2026-09-27T20:00",duration_minutes:60,distance_km:4.7,l20_calories:310,steps:6100,incline_percent:1.5,weight_kg:92.7},
+              {id:"a3",started_at:"2026-09-29T20:00",duration_minutes:70,distance_km:5.9,l20_calories:390,steps:7600,incline_percent:0,weight_kg:92.4}
+            ]));
+          });
+          await page.reload({waitUntil:"networkidle"});
+          await page.locator("#monthKm").waitFor();
+          if(!(await page.locator("#openSession").isVisible())) throw new Error("Bouton Nouvelle séance invisible");
+          if((await page.locator("#monthKm").textContent()).includes("0 km")) throw new Error("Les statistiques seedées ne se chargent pas");
+          await page.screenshot({path:"stepflix-home-mobile.png",fullPage:true});
+          await page.locator('[data-view="progress"]').click();
+          await page.locator("#weeklyChart").waitFor();
+          await page.screenshot({path:"stepflix-progress-mobile.png",fullPage:true});
+          await page.locator('[data-view="profile"]').click();
+          await page.screenshot({path:"stepflix-profile-mobile.png",fullPage:true});
+          if(errors.length) throw new Error("Erreurs navigateur: "+errors.join(" | "));
+          await browser.close();
+          JS
+          node /tmp/audit.mjs
+      - name: Upload audit screenshots
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: stepflix-ui-audit
+          path: stepflix-*-mobile.png
+          if-no-files-found: ignore
