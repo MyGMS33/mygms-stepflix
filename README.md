@@ -81,3 +81,18 @@ Le backend FastAPI + SQLite reste dans le dépôt pour une future version synchr
 - clarification entre calories L20 et estimation StepFlix
 - interface mobile affinée jusqu'à 360 px
 - audit automatisé Playwright : chargement, création d'une séance, historique, filtres, débordement mobile et captures d'écran
+
+
+## V1.2 — refonte visuelle
+
+- accueil redessiné pour se rapprocher de la maquette mobile de référence
+- cartes compactes avec icônes et métriques colorées
+- objectif quotidien circulaire et barre de progression
+- série hebdomadaire avec jours actifs
+- écran Nouvelle séance plein écran avec grandes cartes de saisie
+- panneau de calcul automatique vitesse/allure
+- page Progression densifiée avec deux graphiques principaux et deux mini-courbes
+- moyennes 7/30 jours et poids actuel
+- navigation fixe retravaillée
+- mise en page optimisée pour tenir beaucoup plus d'informations dans un écran mobile
+- auto-audit Playwright conservé sur les futures branches `feat/stepflix-*`
