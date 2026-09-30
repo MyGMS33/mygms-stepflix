@@ -132,7 +132,8 @@
   <script>
     const SESSION_KEY="stepflix.sessions.v1";
     const SETTINGS_KEY="stepflix.settings.v1";
-    const state={sessions:[],stats:null,settings:{daily_step_goal:10000,current_weight_kg:null,target_weight_kg:null},range:"8w"};\n    let deferredInstallPrompt=null;
+    const state={sessions:[],stats:null,settings:{daily_step_goal:10000,current_weight_kg:null,target_weight_kg:null},range:"8w"};
+    let deferredInstallPrompt=null;
     const $=s=>document.querySelector(s);
     const qsa=s=>[...document.querySelectorAll(s)];
     const fmt=n=>new Intl.NumberFormat("fr-FR",{maximumFractionDigits:1}).format(n||0);
@@ -243,7 +244,8 @@
       const min=Number($("#duration").value),km=Number($("#distance").value);if(!min||!km){$("#calcSpeed").textContent="—";$("#calcPace").textContent="—";return}
       $("#calcSpeed").textContent=fmt(km/(min/60))+" km/h";$("#calcPace").textContent=paceText(min,km);
     }
-    qsa(".nav button").forEach(b=>b.addEventListener("click",()=>switchView(b.dataset.view)));\n    qsa("#rangeSelector button").forEach(b=>b.addEventListener("click",()=>{state.range=b.dataset.range;qsa("#rangeSelector button").forEach(x=>x.classList.toggle("active",x===b));render()}));
+    qsa(".nav button").forEach(b=>b.addEventListener("click",()=>switchView(b.dataset.view)));
+    qsa("#rangeSelector button").forEach(b=>b.addEventListener("click",()=>{state.range=b.dataset.range;qsa("#rangeSelector button").forEach(x=>x.classList.toggle("active",x===b));render()}));
     $("#openSession").addEventListener("click",()=>{$("#startedAt").value=localDateTime();$("#sessionDialog").showModal()});
     $("#closeSession").addEventListener("click",()=>$("#sessionDialog").close());
     ["duration","distance"].forEach(id=>$("#"+id).addEventListener("input",updateCalc));
