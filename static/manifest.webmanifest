@@ -1,0 +1,17 @@
+{
+  "name": "StepFlix",
+  "short_name": "StepFlix",
+  "description": "Watch. Walk. Progress.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#090c0f",
+  "theme_color": "#090c0f",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

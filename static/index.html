@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#090c0f">
+  <title>StepFlix — Watch. Walk. Progress.</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icon.svg">
+  <style>
+    :root{--bg:#080b0e;--panel:#11161b;--panel2:#161d22;--line:#263038;--text:#f4f7f5;--muted:#8d9aa2;--green:#7cf29a;--green2:#b0ffc2;--purple:#b287ff;--blue:#69b7ff;--danger:#ff7c89;--radius:22px}
+    *{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at 50% -20%,#17231d 0,#080b0e 35%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+    button,input,select,textarea{font:inherit} button{cursor:pointer}
+    .app{width:min(100%,560px);margin:auto;min-height:100vh;padding:22px 18px 94px}
+    .brand{display:flex;align-items:center;gap:11px;font-size:24px;font-weight:850;letter-spacing:-.5px}.brand img{width:34px;height:34px}.tag{color:var(--muted);margin:4px 0 18px}
+    .hero{background:linear-gradient(135deg,#17271c,#101519 55%,#171328);border:1px solid #26372c;border-radius:28px;padding:22px;overflow:hidden;position:relative}.hero:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;background:#7cf29a22;right:-70px;top:-80px;filter:blur(8px)}.hero h1{font-size:31px;line-height:1.02;letter-spacing:-1.2px;margin:0 0 8px}.hero p{color:#a9b5af;margin:0 0 18px}
+    .primary{border:0;background:var(--green);color:#071009;font-weight:850;padding:15px 20px;border-radius:16px;width:100%;box-shadow:0 8px 32px #7cf29a28}.primary:active{transform:translateY(1px)}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:12px}.card{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:var(--radius);padding:16px;min-width:0}.card .k{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.65px}.card .v{font-size:24px;font-weight:850;letter-spacing:-.7px;margin-top:5px;white-space:nowrap}.card .s{font-size:12px;color:var(--green);margin-top:5px}
+    .wide{grid-column:1/-1}.section-title{display:flex;justify-content:space-between;align-items:center;margin:23px 2px 10px}.section-title h2{font-size:16px;margin:0}.section-title span{color:var(--muted);font-size:12px}
+    .progress{height:9px;border-radius:999px;background:#242d31;overflow:hidden;margin-top:10px}.progress>i{display:block;height:100%;background:linear-gradient(90deg,var(--green),#a9ffba);border-radius:inherit}
+    .today{display:flex;justify-content:space-between;gap:16px;align-items:flex-end}.today strong{font-size:26px}.today small{display:block;color:var(--muted)}
+    .nav{position:fixed;z-index:20;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,560px);background:#0d1216ee;border-top:1px solid var(--line);backdrop-filter:blur(14px);display:grid;grid-template-columns:repeat(4,1fr);padding:9px 8px calc(9px + env(safe-area-inset-bottom))}
+    .nav button{border:0;background:transparent;color:#718087;padding:7px 2px;font-size:11px;font-weight:750}.nav button b{display:block;font-size:20px;line-height:21px;margin-bottom:2px}.nav button.active{color:var(--green)}
+    .view{display:none}.view.active{display:block}.list{display:grid;gap:10px}.session{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}.session h3{font-size:16px;margin:0 0 5px}.session p{font-size:13px;color:var(--muted);margin:0}.pill{display:inline-block;border:1px solid #31413a;background:#15231a;color:var(--green2);border-radius:999px;padding:5px 8px;font-size:12px;font-weight:750}.delete{border:0;background:#27161b;color:#ff9ca5;border-radius:12px;padding:9px 10px}
+    .chart{height:180px;width:100%;margin-top:8px}.chart svg{width:100%;height:100%;overflow:visible}.chart .axis{stroke:#283139;stroke-width:1}.chart text{fill:#75828a;font-size:10px}.chart .line{fill:none;stroke:var(--green);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.chart .area{fill:url(#fade)}.chart .bar{fill:var(--purple);opacity:.85}
+    .empty{text-align:center;color:var(--muted);padding:30px 12px}.empty b{display:block;color:var(--text);font-size:18px;margin-bottom:4px}
+    dialog{width:min(520px,calc(100% - 20px));max-height:92vh;overflow:auto;border:1px solid #2b383e;background:#0d1216;color:var(--text);border-radius:26px;padding:0;box-shadow:0 25px 80px #000b}dialog::backdrop{background:#000a;backdrop-filter:blur(4px)}.form-head{position:sticky;top:0;background:#0d1216ee;backdrop-filter:blur(12px);padding:18px 18px 12px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1f282d;z-index:2}.form-head h2{margin:0}.x{border:0;background:#1d252b;color:#d8e0dc;width:38px;height:38px;border-radius:50%}.form-body{padding:16px 18px 22px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:11px}.field{min-width:0}.field.full{grid-column:1/-1}.field label{display:block;color:var(--muted);font-size:12px;font-weight:750;margin:0 0 6px}.field input,.field select,.field textarea{width:100%;border:1px solid #2c373e;background:#141b20;color:var(--text);border-radius:14px;padding:13px 12px;outline:none}.field input:focus,.field select:focus,.field textarea:focus{border-color:#66c880;box-shadow:0 0 0 3px #7cf29a17}.field textarea{min-height:72px;resize:vertical}.calc{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#132019;border:1px solid #2c4f36;border-radius:18px;padding:13px;margin:14px 0}.calc span{color:#94a49b;font-size:11px}.calc b{display:block;font-size:20px;color:var(--green2);margin-top:4px}
+    .profile-row{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:12px 0}.profile-row input{width:130px}.save-small{border:0;border-radius:12px;background:#203029;color:var(--green);font-weight:800;padding:10px 13px}
+    .notice{background:#111a1d;border:1px solid #263238;border-radius:16px;padding:13px;color:#9dabb1;font-size:13px;line-height:1.45}.notice strong{color:#e4ebe7}.error{color:#ff9da6;font-size:13px;margin-top:10px;min-height:18px}.toast{position:fixed;left:50%;bottom:88px;transform:translate(-50%,20px);background:#e9fff0;color:#092011;border-radius:14px;padding:11px 16px;font-weight:800;opacity:0;pointer-events:none;transition:.25s;z-index:40}.toast.show{opacity:1;transform:translate(-50%,0)}
+    @media(max-width:380px){.grid,.fields{grid-template-columns:1fr}.wide,.field.full{grid-column:auto}.card .v{font-size:21px}}
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section id="home" class="view active">
+      <div class="brand"><img src="/icon.svg" alt=""><span>StepFlix</span></div>
+      <p class="tag">Watch. Walk. Progress.</p>
+      <div class="hero">
+        <h1>Un épisode de plus.<br>Quelques kilomètres aussi.</h1>
+        <p>Transforme ton temps d’écran en progression mesurable.</p>
+        <button id="openSession" class="primary">＋ Nouvelle séance</button>
+      </div>
+      <div class="grid">
+        <div class="card"><div class="k">Distance du mois</div><div class="v" id="monthKm">0 km</div><div class="s" id="monthSessions">0 séance</div></div>
+        <div class="card"><div class="k">Temps ce mois</div><div class="v" id="monthTime">0 h</div><div class="s">activité enregistrée</div></div>
+        <div class="card"><div class="k">Vitesse moyenne</div><div class="v" id="monthSpeed">0 km/h</div><div class="s">ce mois</div></div>
+        <div class="card"><div class="k">Série en cours</div><div class="v" id="streak">0 jour</div><div class="s">régularité</div></div>
+        <div class="card wide">
+          <div class="today"><div><small>Objectif du jour</small><strong id="todaySteps">0 / 10 000 pas</strong></div><span class="pill" id="goalPct">0%</span></div>
+          <div class="progress"><i id="goalBar" style="width:0%"></i></div>
+        </div>
+      </div>
+      <div class="section-title"><h2>7 derniers jours</h2><span id="weekSummary">0 km</span></div>
+      <div class="card"><div class="chart" id="homeChart"></div></div>
+    </section>
+
+    <section id="history" class="view">
+      <div class="brand"><span>Historique</span></div><p class="tag">Toutes tes séances, sans perdre les données brutes.</p>
+      <div class="list" id="sessionList"></div>
+    </section>
+
+    <section id="progress" class="view">
+      <div class="brand"><span>Progression</span></div><p class="tag">Les tendances qui n’existent pas sur l’écran du tapis.</p>
+      <div class="grid">
+        <div class="card"><div class="k">Distance totale</div><div class="v" id="totalKm">0 km</div></div>
+        <div class="card"><div class="k">Temps total</div><div class="v" id="totalHours">0 h</div></div>
+        <div class="card"><div class="k">Séances</div><div class="v" id="totalSessions">0</div></div>
+        <div class="card"><div class="k">30 jours</div><div class="v" id="last30Km">0 km</div></div>
+      </div>
+      <div class="section-title"><h2>Kilomètres par semaine</h2><span>8 semaines</span></div>
+      <div class="card"><div class="chart" id="weeklyChart"></div></div>
+      <div class="section-title"><h2>Vitesse moyenne</h2><span>par séance</span></div>
+      <div class="card"><div class="chart" id="speedChart"></div></div>
+    </section>
+
+    <section id="profile" class="view">
+      <div class="brand"><span>Moi</span></div><p class="tag">Tes paramètres personnels restent dans ta propre base StepFlix.</p>
+      <div class="card">
+        <div class="profile-row"><div><b>Objectif de pas</b><div class="tag" style="margin:3px 0 0">objectif quotidien</div></div><input id="goalInput" type="number" min="1000" step="500"></div>
+        <div class="profile-row"><div><b>Poids actuel</b><div class="tag" style="margin:3px 0 0">pour l’estimation kcal</div></div><input id="weightInput" type="number" min="30" max="300" step="0.1" placeholder="kg"></div>
+        <div class="profile-row"><div><b>Poids cible</b><div class="tag" style="margin:3px 0 0">optionnel</div></div><input id="targetWeightInput" type="number" min="30" max="300" step="0.1" placeholder="kg"></div>
+        <button id="saveSettings" class="primary">Enregistrer les paramètres</button>
+      </div>
+      <div class="section-title"><h2>À propos des calories</h2></div>
+      <div class="notice"><strong>CAL L20</strong> est conservé exactement comme affiché par le tapis. <strong>Estimation StepFlix</strong> est calculée séparément avec durée, distance, inclinaison et poids. Elle reste une estimation physiologique, pas une mesure directe.</div>
+      <div class="section-title"><h2>Architecture</h2></div>
+      <div class="notice">Cette V1 utilise une API FastAPI et SQLite sur ton serveur. Le navigateur n’a pas besoin d’accéder à GitHub pour enregistrer une séance. Le dépôt GitHub contient uniquement le code.</div>
+    </section>
+  </main>
+
+  <nav class="nav">
+    <button class="active" data-view="home"><b>⌂</b>Accueil</button>
+    <button data-view="history"><b>◷</b>Historique</button>
+    <button data-view="progress"><b>▥</b>Progression</button>
+    <button data-view="profile"><b>☺</b>Moi</button>
+  </nav>
+
+  <dialog id="sessionDialog">
+    <div class="form-head"><div><h2>Nouvelle séance</h2><div class="tag" style="margin:2px 0 0">10 secondes, puis c’est enregistré.</div></div><button class="x" id="closeSession">×</button></div>
+    <form id="sessionForm" class="form-body">
+      <div class="fields">
+        <div class="field full"><label>Date et heure</label><input id="startedAt" type="datetime-local" required></div>
+        <div class="field"><label>Durée (min)</label><input id="duration" type="number" min="1" step="1" inputmode="decimal" required></div>
+        <div class="field"><label>Distance (km)</label><input id="distance" type="number" min="0" step="0.01" inputmode="decimal" required></div>
+        <div class="field"><label>Calories L20</label><input id="l20Calories" type="number" min="0" step="1" inputmode="decimal"></div>
+        <div class="field"><label>Pas</label><input id="steps" type="number" min="0" step="1" inputmode="numeric"></div>
+        <div class="field"><label>Inclinaison moyenne (%)</label><input id="incline" type="number" min="0" max="40" step="0.1" value="0" inputmode="decimal"></div>
+        <div class="field"><label>Ressenti</label><select id="feeling"><option value="">—</option><option>Très facile</option><option>Facile</option><option>Bien</option><option>Difficile</option><option>Très difficile</option></select></div>
+        <div class="field"><label>Effort /10</label><input id="effort" type="number" min="1" max="10" step="1"></div>
+        <div class="field"><label>FC moyenne</label><input id="heartRate" type="number" min="30" max="240" step="1" placeholder="bpm"></div>
+        <div class="field full"><label>Notes</label><textarea id="notes" maxlength="500" placeholder="Ex. Série, épisode, sensations…"></textarea></div>
+      </div>
+      <div class="calc"><div><span>Vitesse moyenne</span><b id="calcSpeed">—</b></div><div><span>Allure moyenne</span><b id="calcPace">—</b></div></div>
+      <button class="primary" type="submit">✓ Enregistrer la séance</button>
+      <div class="error" id="formError"></div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast">Séance enregistrée ✓</div>
+
+  <script>
+    const state={sessions:[],stats:null,settings:{}};
+    const $=s=>document.querySelector(s);
+    const $$=s=>[...document.querySelectorAll(s)];
+    const fmt=n=>new Intl.NumberFormat("fr-FR",{maximumFractionDigits:1}).format(n||0);
+    const localDateTime=()=>{const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,16)};
+    const api=async(path,options={})=>{const r=await fetch(path,{headers:{"Content-Type":"application/json"},...options});if(!r.ok&&r.status!==204){let m="Erreur";try{m=(await r.json()).detail||m}catch(e){}throw new Error(m)}return r.status===204?null:r.json()};
+    const durationLabel=min=>min>=60?(min/60).toFixed(min%60?1:0)+" h":Math.round(min)+" min";
+    const escapeHtml=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+
+    function showToast(text){const t=$("#toast");t.textContent=text;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1800)}
+    function switchView(id){$$(".view").forEach(v=>v.classList.toggle("active",v.id===id));$$(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===id));window.scrollTo({top:0,behavior:"smooth"})}
+
+    function sessionDate(s){return new Date(s.started_at)}
+    function dayKey(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+    function weekStart(d){const x=new Date(d);x.setHours(0,0,0,0);const day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);return x}
+
+    function last7Data(){
+      const out=[]; const now=new Date(); now.setHours(0,0,0,0);
+      for(let i=6;i>=0;i--){const d=new Date(now);d.setDate(d.getDate()-i);const key=dayKey(d);const km=state.sessions.filter(s=>dayKey(sessionDate(s))===key).reduce((a,s)=>a+Number(s.distance_km),0);out.push({label:["D","L","M","M","J","V","S"][d.getDay()],value:km})}
+      return out
+    }
+    function weeklyData(){
+      const out=[];const current=weekStart(new Date());
+      for(let i=7;i>=0;i--){const start=new Date(current);start.setDate(start.getDate()-i*7);const end=new Date(start);end.setDate(end.getDate()+7);const km=state.sessions.filter(s=>{const d=sessionDate(s);return d>=start&&d<end}).reduce((a,s)=>a+Number(s.distance_km),0);out.push({label:String(start.getDate())+"/"+String(start.getMonth()+1),value:km})}
+      return out
+    }
+    function speedData(){return [...state.sessions].sort((a,b)=>sessionDate(a)-sessionDate(b)).slice(-12).map((s,i)=>({label:String(i+1),value:Number(s.avg_speed_kmh)}))}
+
+    function barChart(el,data){
+      if(!data.some(x=>x.value>0)){el.innerHTML='<div class="empty"><b>Pas encore de données</b>Enregistre ta première séance.</div>';return}
+      const w=500,h=150,p=22,max=Math.max(...data.map(x=>x.value),1),gap=9,bw=(w-p*2-gap*(data.length-1))/data.length;
+      let bars="",labels="";
+      data.forEach((x,i)=>{const bh=(h-35)*x.value/max;const bx=p+i*(bw+gap);bars+='<rect class="bar" x="'+bx+'" y="'+(h-25-bh)+'" width="'+bw+'" height="'+bh+'" rx="5"></rect>';labels+='<text x="'+(bx+bw/2)+'" y="'+(h-7)+'" text-anchor="middle">'+x.label+'</text>'});
+      el.innerHTML='<svg viewBox="0 0 '+w+' '+h+'" role="img"><line class="axis" x1="'+p+'" y1="'+(h-25)+'" x2="'+(w-p)+'" y2="'+(h-25)+'"></line>'+bars+labels+'</svg>';
+    }
+
+    function lineChart(el,data){
+      if(data.length<2||!data.some(x=>x.value>0)){el.innerHTML='<div class="empty"><b>Pas assez de données</b>Deux séances suffisent pour lancer la courbe.</div>';return}
+      const w=500,h=150,p=24,vals=data.map(x=>x.value),min=Math.min(...vals),max=Math.max(...vals),span=Math.max(max-min,.5);
+      const pts=data.map((x,i)=>{const px=p+i*(w-p*2)/(data.length-1);const py=h-p-((x.value-min)/span)*(h-p*2);return [px,py]});
+      const d=pts.map((q,i)=>(i?"L":"M")+q[0].toFixed(1)+" "+q[1].toFixed(1)).join(" ");
+      const labels=data.map((x,i)=>'<text x="'+pts[i][0]+'" y="'+(h-4)+'" text-anchor="middle">'+x.label+'</text>').join("");
+      el.innerHTML='<svg viewBox="0 0 '+w+' '+h+'" role="img"><line class="axis" x1="'+p+'" y1="'+(h-p)+'" x2="'+(w-p)+'" y2="'+(h-p)+'"></line><path class="line" d="'+d+'"></path>'+pts.map(q=>'<circle cx="'+q[0]+'" cy="'+q[1]+'" r="4" fill="#7cf29a"></circle>').join("")+labels+'</svg>';
+    }
+
+    function render(){
+      const st=state.stats||{month:{},week:{},today:{},total:{},last30:{},streak_days:0,daily_step_goal:10000};
+      $("#monthKm").textContent=fmt(st.month.distance_km)+" km";
+      $("#monthSessions").textContent=(st.month.sessions||0)+" séance"+((st.month.sessions||0)>1?"s":"");
+      $("#monthTime").textContent=durationLabel(st.month.minutes||0);
+      $("#monthSpeed").textContent=fmt(st.month.avg_speed_kmh)+" km/h";
+      $("#streak").textContent=(st.streak_days||0)+" jour"+((st.streak_days||0)>1?"s":"");
+      const goal=st.daily_step_goal||10000,steps=st.today.steps||0,pct=Math.min(100,Math.round(steps/goal*100));
+      $("#todaySteps").textContent=new Intl.NumberFormat("fr-FR").format(steps)+" / "+new Intl.NumberFormat("fr-FR").format(goal)+" pas";
+      $("#goalPct").textContent=pct+"%";$("#goalBar").style.width=pct+"%";$("#weekSummary").textContent=fmt(st.week.distance_km)+" km";
+      $("#totalKm").textContent=fmt(st.total.distance_km)+" km";$("#totalHours").textContent=fmt(st.total.hours)+" h";$("#totalSessions").textContent=st.total.sessions||0;$("#last30Km").textContent=fmt(st.last30.distance_km)+" km";
+      barChart($("#homeChart"),last7Data());barChart($("#weeklyChart"),weeklyData());lineChart($("#speedChart"),speedData());
+      renderHistory();
+      $("#goalInput").value=state.settings.daily_step_goal||10000;
+      $("#weightInput").value=state.settings.current_weight_kg??"";
+      $("#targetWeightInput").value=state.settings.target_weight_kg??"";
+    }
+
+    function renderHistory(){
+      const el=$("#sessionList");
+      if(!state.sessions.length){el.innerHTML='<div class="empty card"><b>Aucune séance</b>Ta première session apparaîtra ici.</div>';return}
+      el.innerHTML=state.sessions.map(s=>{
+        const d=sessionDate(s);const date=d.toLocaleDateString("fr-FR",{weekday:"short",day:"2-digit",month:"short"});
+        const kcal=s.estimated_kcal?'<span class="pill">≈ '+s.estimated_kcal+' kcal</span>':'';
+        return '<article class="card session"><div><h3>'+date+' · '+fmt(s.distance_km)+' km</h3><p>'+fmt(s.duration_minutes)+' min · '+fmt(s.avg_speed_kmh)+' km/h · '+s.pace+(s.steps?' · '+new Intl.NumberFormat("fr-FR").format(s.steps)+' pas':'')+'</p><div style="margin-top:9px">'+kcal+'</div></div><button class="delete" data-delete="'+s.id+'" aria-label="Supprimer">✕</button></article>'
+      }).join("");
+      $$("[data-delete]").forEach(btn=>btn.addEventListener("click",async()=>{if(!confirm("Supprimer cette séance ?"))return;await api("/api/sessions/"+btn.dataset.delete,{method:"DELETE"});showToast("Séance supprimée");await load()}))
+    }
+
+    async function load(){
+      try{
+        const [sessions,stats,settings]=await Promise.all([api("/api/sessions"),api("/api/stats"),api("/api/settings")]);
+        state.sessions=sessions;state.stats=stats;state.settings=settings;render()
+      }catch(e){console.error(e);showToast("Serveur StepFlix indisponible")}
+    }
+
+    function updateCalc(){
+      const min=Number($("#duration").value),km=Number($("#distance").value);
+      if(!min||!km){$("#calcSpeed").textContent="—";$("#calcPace").textContent="—";return}
+      const speed=km/(min/60),pace=min/km,pm=Math.floor(pace),ps=Math.round((pace-pm)*60);
+      $("#calcSpeed").textContent=fmt(speed)+" km/h";$("#calcPace").textContent=pm+":"+String(ps===60?0:ps).padStart(2,"0")+" /km"
+    }
+
+    $$(".nav button").forEach(b=>b.addEventListener("click",()=>switchView(b.dataset.view)));
+    $("#openSession").addEventListener("click",()=>{$("#startedAt").value=localDateTime();$("#sessionDialog").showModal()});
+    $("#closeSession").addEventListener("click",()=>$("#sessionDialog").close());
+    ["duration","distance"].forEach(id=>$("#"+id).addEventListener("input",updateCalc));
+    $("#sessionDialog").addEventListener("click",e=>{if(e.target===$("#sessionDialog"))$("#sessionDialog").close()});
+
+    $("#sessionForm").addEventListener("submit",async e=>{
+      e.preventDefault();$("#formError").textContent="";
+      const n=id=>$("#"+id).value===""?null:Number($("#"+id).value);
+      const payload={started_at:$("#startedAt").value,duration_minutes:n("duration"),distance_km:n("distance"),l20_calories:n("l20Calories"),steps:n("steps"),incline_percent:n("incline")||0,perceived_effort:n("effort"),feeling:$("#feeling").value||null,notes:$("#notes").value.trim()||null,avg_heart_rate:n("heartRate")};
+      try{await api("/api/sessions",{method:"POST",body:JSON.stringify(payload)});$("#sessionDialog").close();$("#sessionForm").reset();$("#incline").value="0";showToast("Séance enregistrée ✓");await load()}catch(err){$("#formError").textContent=err.message}
+    });
+
+    $("#saveSettings").addEventListener("click",async()=>{
+      const val=id=>$("#"+id).value===""?null:Number($("#"+id).value);
+      try{state.settings=await api("/api/settings",{method:"PUT",body:JSON.stringify({daily_step_goal:val("goalInput"),current_weight_kg:val("weightInput"),target_weight_kg:val("targetWeightInput")})});showToast("Paramètres enregistrés");await load()}catch(e){showToast("Impossible d’enregistrer")}
+    });
+
+    if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js").catch(console.error);
+    load();
+  </script>
+</body>
+</html>
