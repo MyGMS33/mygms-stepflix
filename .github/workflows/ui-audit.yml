@@ -2,7 +2,7 @@ name: StepFlix UI audit
 
 on:
   push:
-    branches: ["feat/stepflix-v1-2-redesign", "main"]
+    branches: ["main", "feat/stepflix-*"]
     paths:
       - "static/**"
       - ".github/workflows/ui-audit.yml"
