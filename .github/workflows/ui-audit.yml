@@ -87,5 +87,7 @@ jobs:
         if: always()
         with:
           name: stepflix-ui-audit
-          path: |\n            stepflix-*-mobile.png\n            stepflix-home-360.png
+          path: |
+            stepflix-*-mobile.png
+            stepflix-home-360.png
           if-no-files-found: ignore
