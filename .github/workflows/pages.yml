@@ -2,7 +2,7 @@ name: Deploy StepFlix to GitHub Pages
 
 on:
   push:
-    branches: ["main", "feat/stepflix-v1"]
+    branches: ["main"]
     paths:
       - "static/**"
       - ".github/workflows/pages.yml"
