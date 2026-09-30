@@ -48,12 +48,36 @@ jobs:
           await page.locator("#monthKm").waitFor();
           if(!(await page.locator("#openSession").isVisible())) throw new Error("Bouton Nouvelle séance invisible");
           if((await page.locator("#monthKm").textContent()).includes("0 km")) throw new Error("Les statistiques seedées ne se chargent pas");
+          const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
+          if(overflow>1) throw new Error("Débordement horizontal mobile: "+overflow+"px");
           await page.screenshot({path:"stepflix-home-mobile.png",fullPage:true});
+
+          await page.locator("#openSession").click();
+          await page.locator("#duration").fill("30");
+          await page.locator("#distance").fill("2.1");
+          await page.locator("#l20Calories").fill("145");
+          await page.locator("#steps").fill("2900");
+          await page.locator("#startedAt").fill("2026-09-30T18:00");
+          await page.screenshot({path:"stepflix-session-mobile.png",fullPage:true});
+          await page.locator("#sessionForm button[type=submit]").click();
+          await page.locator('[data-view="history"]').click();
+          if(await page.locator(".session").count()<4) throw new Error("La nouvelle séance n'a pas été enregistrée");
+
           await page.locator('[data-view="progress"]').click();
           await page.locator("#weeklyChart").waitFor();
           await page.screenshot({path:"stepflix-progress-mobile.png",fullPage:true});
+          await page.locator('[data-range="6m"]').click();
+          if(!(await page.locator('[data-range="6m"]').getAttribute("class")||"").includes("active")) throw new Error("Le filtre 6 mois ne s'active pas");
+
           await page.locator('[data-view="profile"]').click();
           await page.screenshot({path:"stepflix-profile-mobile.png",fullPage:true});
+
+          await page.setViewportSize({width:360,height:800});
+          await page.locator('[data-view="home"]').click();
+          const overflow360=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
+          if(overflow360>1) throw new Error("Débordement horizontal 360px: "+overflow360+"px");
+          await page.screenshot({path:"stepflix-home-360.png",fullPage:true});
+
           if(errors.length) throw new Error("Erreurs navigateur: "+errors.join(" | "));
           await browser.close();
           JS
@@ -63,5 +87,5 @@ jobs:
         if: always()
         with:
           name: stepflix-ui-audit
-          path: stepflix-*-mobile.png
+          path: |\n            stepflix-*-mobile.png\n            stepflix-home-360.png
           if-no-files-found: ignore
