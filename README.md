@@ -55,3 +55,16 @@ Les calories StepFlix restent une estimation et ne doivent pas être interprét�
 ## Branche de développement
 
 `feat/stepflix-v1`
+
+
+## GitHub Pages
+
+La version publiée sur GitHub Pages est 100 % statique et fonctionne sans serveur Python.
+
+- les séances sont enregistrées localement dans le navigateur du téléphone
+- les paramètres sont enregistrés localement
+- aucune donnée personnelle n'est poussée dans GitHub
+- Export JSON / Import JSON permet de sauvegarder ou restaurer l'historique
+- l'app reste installable comme PWA Android
+
+Le backend FastAPI + SQLite reste dans le dépôt pour une future version synchronisée sur serveur Ubuntu.
