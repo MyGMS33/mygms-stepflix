@@ -124,7 +124,7 @@
     const SETTINGS_KEY="stepflix.settings.v1";
     const state={sessions:[],stats:null,settings:{daily_step_goal:10000,current_weight_kg:null,target_weight_kg:null}};
     const $=s=>document.querySelector(s);
-    const $=s=>[...document.querySelectorAll(s)];
+    const qsa=s=>[...document.querySelectorAll(s)];
     const fmt=n=>new Intl.NumberFormat("fr-FR",{maximumFractionDigits:1}).format(n||0);
     const localDateTime=()=>{const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,16)};
     const durationLabel=min=>min>=60?(min/60).toFixed(min%60?1:0)+" h":Math.round(min)+" min";
@@ -213,7 +213,7 @@
       const min=Number($("#duration").value),km=Number($("#distance").value);if(!min||!km){$("#calcSpeed").textContent="—";$("#calcPace").textContent="—";return}
       $("#calcSpeed").textContent=fmt(km/(min/60))+" km/h";$("#calcPace").textContent=paceText(min,km);
     }
-    $(".nav button").forEach(b=>b.addEventListener("click",()=>switchView(b.dataset.view)));
+    qsa(".nav button").forEach(b=>b.addEventListener("click",()=>switchView(b.dataset.view)));
     $("#openSession").addEventListener("click",()=>{$("#startedAt").value=localDateTime();$("#sessionDialog").showModal()});
     $("#closeSession").addEventListener("click",()=>$("#sessionDialog").close());
     ["duration","distance"].forEach(id=>$("#"+id).addEventListener("input",updateCalc));
