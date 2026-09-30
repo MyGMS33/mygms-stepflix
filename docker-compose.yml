@@ -1,0 +1,11 @@
+services:
+  stepflix:
+    build: .
+    container_name: stepflix
+    restart: unless-stopped
+    environment:
+      STEPFLIX_DB: /data/stepflix.db
+    volumes:
+      - ./data:/data
+    ports:
+      - "127.0.0.1:8787:8787"
