@@ -148,7 +148,7 @@
       return {...s,avg_speed_kmh:minutes?Math.round((distance/(minutes/60))*100)/100:0,pace:paceText(minutes,distance),estimated_kcal:estimateKcal(minutes,distance,s.incline_percent,s.weight_kg??state.settings.current_weight_kg)};
     }
     function showToast(text){const t=$("#toast");t.textContent=text;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1800)}
-    function switchView(id){$(".view").forEach(v=>v.classList.toggle("active",v.id===id));$(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===id));window.scrollTo({top:0,behavior:"smooth"})}
+    function switchView(id){qsa(".view").forEach(v=>v.classList.toggle("active",v.id===id));qsa(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===id));window.scrollTo({top:0,behavior:"smooth"})}
     function sessionDate(s){return new Date(s.started_at)}
     function dayKey(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
     function weekStart(d){const x=new Date(d);x.setHours(0,0,0,0);const day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);return x}
@@ -195,7 +195,7 @@
       const el=$("#sessionList");if(!state.sessions.length){el.innerHTML='<div class="empty card"><b>Aucune séance</b>Ta première session apparaîtra ici.</div>';return}
       el.innerHTML=[...state.sessions].sort((a,b)=>sessionDate(b)-sessionDate(a)).map(s=>{const d=sessionDate(s),date=d.toLocaleDateString("fr-FR",{weekday:"short",day:"2-digit",month:"short"}),kcal=s.estimated_kcal?'<span class="pill">≈ '+s.estimated_kcal+' kcal</span>':'';
         return '<article class="card session"><div><h3>'+date+' · '+fmt(s.distance_km)+' km</h3><p>'+fmt(s.duration_minutes)+' min · '+fmt(s.avg_speed_kmh)+' km/h · '+s.pace+(s.steps?' · '+new Intl.NumberFormat("fr-FR").format(s.steps)+' pas':'')+'</p><div style="margin-top:9px">'+kcal+'</div></div><button class="delete" data-delete="'+s.id+'" aria-label="Supprimer">✕</button></article>'}).join("");
-      $("[data-delete]").forEach(btn=>btn.addEventListener("click",()=>{if(!confirm("Supprimer cette séance ?"))return;state.sessions=state.sessions.filter(s=>String(s.id)!==String(btn.dataset.delete));writeJSON(SESSION_KEY,state.sessions);load();showToast("Séance supprimée")}))
+      qsa("[data-delete]").forEach(btn=>btn.addEventListener("click",()=>{if(!confirm("Supprimer cette séance ?"))return;state.sessions=state.sessions.filter(s=>String(s.id)!==String(btn.dataset.delete));writeJSON(SESSION_KEY,state.sessions);load();showToast("Séance supprimée")}))
     }
     function render(){
       state.stats=computeStats();const st=state.stats;
