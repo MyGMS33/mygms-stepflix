@@ -54,7 +54,7 @@ Les calories StepFlix restent une estimation et ne doivent pas être interprét�
 
 ## Branche de développement
 
-`feat/stepflix-v1`
+`feat/stepflix-v1-1`
 
 
 ## GitHub Pages
@@ -68,3 +68,16 @@ La version publiée sur GitHub Pages est 100 % statique et fonctionne sans serve
 - l'app reste installable comme PWA Android
 
 Le backend FastAPI + SQLite reste dans le dépôt pour une future version synchronisée sur serveur Ubuntu.
+
+
+## V1.1
+
+- dashboard enrichi : séances semaine, calories estimées et pas StepFlix du mois
+- progression avec filtres 8 semaines / 6 mois / 1 an / tout
+- courbe des minutes d'activité
+- courbe de poids à partir du poids mémorisé lors des séances
+- comparaison 30 jours / 30 jours précédents
+- bouton d'installation PWA quand le navigateur le permet
+- clarification entre calories L20 et estimation StepFlix
+- interface mobile affinée jusqu'à 360 px
+- audit automatisé Playwright : chargement, création d'une séance, historique, filtres, débordement mobile et captures d'écran
