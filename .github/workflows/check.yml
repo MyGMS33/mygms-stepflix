@@ -2,7 +2,7 @@ name: StepFlix checks
 
 on:
   push:
-    branches: ["feat/stepflix-v1-2-redesign", "main"]
+    branches: ["main", "feat/stepflix-*"]
   pull_request:
 
 jobs:
