@@ -26,8 +26,8 @@
     .empty{text-align:center;color:var(--muted);padding:30px 12px}.empty b{display:block;color:var(--text);font-size:18px;margin-bottom:4px}
     dialog{width:min(520px,calc(100% - 20px));max-height:92vh;overflow:auto;border:1px solid #2b383e;background:#0d1216;color:var(--text);border-radius:26px;padding:0;box-shadow:0 25px 80px #000b}dialog::backdrop{background:#000a;backdrop-filter:blur(4px)}.form-head{position:sticky;top:0;background:#0d1216ee;backdrop-filter:blur(12px);padding:18px 18px 12px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1f282d;z-index:2}.form-head h2{margin:0}.x{border:0;background:#1d252b;color:#d8e0dc;width:38px;height:38px;border-radius:50%}.form-body{padding:16px 18px 22px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:11px}.field{min-width:0}.field.full{grid-column:1/-1}.field label{display:block;color:var(--muted);font-size:12px;font-weight:750;margin:0 0 6px}.field input,.field select,.field textarea{width:100%;border:1px solid #2c373e;background:#141b20;color:var(--text);border-radius:14px;padding:13px 12px;outline:none}.field input:focus,.field select:focus,.field textarea:focus{border-color:#66c880;box-shadow:0 0 0 3px #7cf29a17}.field textarea{min-height:72px;resize:vertical}.calc{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#132019;border:1px solid #2c4f36;border-radius:18px;padding:13px;margin:14px 0}.calc span{color:#94a49b;font-size:11px}.calc b{display:block;font-size:20px;color:var(--green2);margin-top:4px}
     .profile-row{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:12px 0}.profile-row input{width:130px}.save-small{border:0;border-radius:12px;background:#203029;color:var(--green);font-weight:800;padding:10px 13px}
-    .notice{background:#111a1d;border:1px solid #263238;border-radius:16px;padding:13px;color:#9dabb1;font-size:13px;line-height:1.45}.notice strong{color:#e4ebe7}.error{color:#ff9da6;font-size:13px;margin-top:10px;min-height:18px}.toast{position:fixed;left:50%;bottom:88px;transform:translate(-50%,20px);background:#e9fff0;color:#092011;border-radius:14px;padding:11px 16px;font-weight:800;opacity:0;pointer-events:none;transition:.25s;z-index:40}.toast.show{opacity:1;transform:translate(-50%,0)}
-    @media(max-width:380px){.grid,.fields{grid-template-columns:1fr}.wide,.field.full{grid-column:auto}.card .v{font-size:21px}}
+    .notice{background:#111a1d;border:1px solid #263238;border-radius:16px;padding:13px;color:#9dabb1;font-size:13px;line-height:1.45}.notice strong{color:#e4ebe7}.segmented{display:flex;gap:6px;background:#10161a;border:1px solid var(--line);border-radius:15px;padding:5px;margin:12px 0}.segmented button{flex:1;border:0;border-radius:11px;background:transparent;color:var(--muted);padding:9px 6px;font-weight:800;font-size:12px}.segmented button.active{background:#203129;color:var(--green)}.metric-note{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.25}.install-card{display:none}.install-card.show{display:block}.error{color:#ff9da6;font-size:13px;margin-top:10px;min-height:18px}.toast{position:fixed;left:50%;bottom:88px;transform:translate(-50%,20px);background:#e9fff0;color:#092011;border-radius:14px;padding:11px 16px;font-weight:800;opacity:0;pointer-events:none;transition:.25s;z-index:40}.toast.show{opacity:1;transform:translate(-50%,0)}
+    @media(max-width:380px){.fields{grid-template-columns:1fr}.field.full{grid-column:auto}.card{padding:13px}.card .v{font-size:20px}.app{padding-left:12px;padding-right:12px}.grid{gap:8px}.hero h1{font-size:28px}}@media(max-width:320px){.grid{grid-template-columns:1fr}.wide{grid-column:auto}}
   </style>
 </head>
 <body>
@@ -44,9 +44,12 @@
         <div class="card"><div class="k">Distance du mois</div><div class="v" id="monthKm">0 km</div><div class="s" id="monthSessions">0 séance</div></div>
         <div class="card"><div class="k">Temps ce mois</div><div class="v" id="monthTime">0 h</div><div class="s">activité enregistrée</div></div>
         <div class="card"><div class="k">Vitesse moyenne</div><div class="v" id="monthSpeed">0 km/h</div><div class="s">ce mois</div></div>
-        <div class="card"><div class="k">Série en cours</div><div class="v" id="streak">0 jour</div><div class="s">régularité</div></div>
+        <div class="card"><div class="k">Séances semaine</div><div class="v" id="weekSessions">0</div><div class="s">depuis lundi</div></div>
+        <div class="card"><div class="k">Calories estimées</div><div class="v" id="monthEstimatedKcal">0 kcal</div><div class="s">ce mois</div></div>
+        <div class="card"><div class="k">Pas StepFlix</div><div class="v" id="monthSteps">0</div><div class="s">ce mois</div></div>
+        <div class="card wide"><div class="k">Série en cours</div><div class="v" id="streak">0 jour</div><div class="s">jours consécutifs avec au moins une séance</div></div>
         <div class="card wide">
-          <div class="today"><div><small>Objectif du jour</small><strong id="todaySteps">0 / 10 000 pas</strong></div><span class="pill" id="goalPct">0%</span></div>
+          <div class="today"><div><small>Pas StepFlix aujourd’hui</small><strong id="todaySteps">0 / 10 000 pas</strong></div><span class="pill" id="goalPct">0%</span></div>
           <div class="progress"><i id="goalBar" style="width:0%"></i></div>
         </div>
       </div>
@@ -61,16 +64,23 @@
 
     <section id="progress" class="view">
       <div class="brand"><span>Progression</span></div><p class="tag">Les tendances qui n’existent pas sur l’écran du tapis.</p>
+      <div class="segmented" id="rangeSelector">
+        <button data-range="8w" class="active">8 sem.</button><button data-range="6m">6 mois</button><button data-range="1y">1 an</button><button data-range="all">Tout</button>
+      </div>
       <div class="grid">
         <div class="card"><div class="k">Distance totale</div><div class="v" id="totalKm">0 km</div></div>
         <div class="card"><div class="k">Temps total</div><div class="v" id="totalHours">0 h</div></div>
-        <div class="card"><div class="k">Séances</div><div class="v" id="totalSessions">0</div></div>
-        <div class="card"><div class="k">30 jours</div><div class="v" id="last30Km">0 km</div></div>
+        <div class="card"><div class="k">Jours actifs</div><div class="v" id="activeDays">0</div></div>
+        <div class="card"><div class="k">30 jours</div><div class="v" id="last30Km">0 km</div><div class="s" id="monthDelta">—</div></div>
       </div>
-      <div class="section-title"><h2>Kilomètres par semaine</h2><span>8 semaines</span></div>
+      <div class="section-title"><h2>Kilomètres</h2><span id="rangeLabel">8 semaines</span></div>
       <div class="card"><div class="chart" id="weeklyChart"></div></div>
+      <div class="section-title"><h2>Minutes d’activité</h2><span>même période</span></div>
+      <div class="card"><div class="chart" id="minutesChart"></div></div>
       <div class="section-title"><h2>Vitesse moyenne</h2><span>par séance</span></div>
       <div class="card"><div class="chart" id="speedChart"></div></div>
+      <div class="section-title"><h2>Poids</h2><span>photos prises aux séances</span></div>
+      <div class="card"><div class="chart" id="weightChart"></div></div>
     </section>
 
     <section id="profile" class="view">
@@ -81,10 +91,10 @@
         <div class="profile-row"><div><b>Poids cible</b><div class="tag" style="margin:3px 0 0">optionnel</div></div><input id="targetWeightInput" type="number" min="30" max="300" step="0.1" placeholder="kg"></div>
         <button id="saveSettings" class="primary">Enregistrer les paramètres</button><div class="grid" style="margin-top:11px"><button id="exportData" class="save-small">Exporter mes données</button><button id="importData" class="save-small">Importer une sauvegarde</button></div><input id="importFile" type="file" accept="application/json,.json" hidden>
       </div>
-      <div class="section-title"><h2>À propos des calories</h2></div>
+      <div id="installCard" class="card install-card" style="margin-top:12px"><div class="k">Application</div><div class="v" style="font-size:20px">Installer StepFlix</div><div class="metric-note">Ajoute StepFlix à ton écran d’accueil comme une vraie application.</div><button id="installApp" class="primary" style="margin-top:12px">Installer</button></div><div class="section-title"><h2>À propos des calories</h2></div>
       <div class="notice"><strong>CAL L20</strong> est conservé exactement comme affiché par le tapis. <strong>Estimation StepFlix</strong> est calculée séparément avec durée, distance, inclinaison et poids. Elle reste une estimation physiologique, pas une mesure directe.</div>
       <div class="section-title"><h2>Architecture</h2></div>
-      <div class="notice">Cette V1 utilise une API FastAPI et SQLite sur ton serveur. Le navigateur n’a pas besoin d’accéder à GitHub pour enregistrer une séance. Le dépôt GitHub contient uniquement le code.</div>
+      <div class="notice"><strong>Version GitHub Pages actuelle :</strong> les séances et paramètres sont enregistrés localement sur ce téléphone dans le navigateur. Rien n’est envoyé à GitHub. Utilise régulièrement <strong>Exporter mes données</strong> pour garder une sauvegarde. Le backend FastAPI/SQLite reste dans le dépôt pour une future synchronisation serveur.</div>
     </section>
   </main>
 
@@ -122,7 +132,7 @@
   <script>
     const SESSION_KEY="stepflix.sessions.v1";
     const SETTINGS_KEY="stepflix.settings.v1";
-    const state={sessions:[],stats:null,settings:{daily_step_goal:10000,current_weight_kg:null,target_weight_kg:null}};
+    const state={sessions:[],stats:null,settings:{daily_step_goal:10000,current_weight_kg:null,target_weight_kg:null},range:"8w"};\n    let deferredInstallPrompt=null;
     const $=s=>document.querySelector(s);
     const qsa=s=>[...document.querySelectorAll(s)];
     const fmt=n=>new Intl.NumberFormat("fr-FR",{maximumFractionDigits:1}).format(n||0);
@@ -154,30 +164,48 @@
     function weekStart(d){const x=new Date(d);x.setHours(0,0,0,0);const day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);return x}
     function sumFor(items){
       const minutes=items.reduce((a,s)=>a+Number(s.duration_minutes||0),0),distance=items.reduce((a,s)=>a+Number(s.distance_km||0),0);
-      return {sessions:items.length,minutes:Math.round(minutes*10)/10,distance_km:Math.round(distance*100)/100,steps:items.reduce((a,s)=>a+Number(s.steps||0),0),l20_calories:Math.round(items.reduce((a,s)=>a+Number(s.l20_calories||0),0)),avg_speed_kmh:minutes?Math.round((distance/(minutes/60))*100)/100:0};
+      return {sessions:items.length,minutes:Math.round(minutes*10)/10,distance_km:Math.round(distance*100)/100,steps:items.reduce((a,s)=>a+Number(s.steps||0),0),l20_calories:Math.round(items.reduce((a,s)=>a+Number(s.l20_calories||0),0)),estimated_kcal:Math.round(items.reduce((a,s)=>a+Number(s.estimated_kcal||0),0)),avg_speed_kmh:minutes?Math.round((distance/(minutes/60))*100)/100:0};
     }
     function computeStats(){
       const sessions=[...state.sessions].sort((a,b)=>sessionDate(a)-sessionDate(b)),today=new Date(),todayDate=new Date(today.getFullYear(),today.getMonth(),today.getDate());
       const wStart=weekStart(todayDate),monthStart=new Date(todayDate.getFullYear(),todayDate.getMonth(),1),last30=new Date(todayDate);last30.setDate(last30.getDate()-29);
+      const prev30Start=new Date(last30);prev30Start.setDate(prev30Start.getDate()-30);const prev30End=new Date(last30);
       const dateOnly=s=>{const d=sessionDate(s);return new Date(d.getFullYear(),d.getMonth(),d.getDate())};
       const same=(a,b)=>a.getTime()===b.getTime();
       const active=new Set(sessions.map(s=>dayKey(dateOnly(s))));
       let cursor=new Date(todayDate),streak=0;if(!active.has(dayKey(cursor)))cursor.setDate(cursor.getDate()-1);
       while(active.has(dayKey(cursor))){streak++;cursor.setDate(cursor.getDate()-1)}
       const total=sumFor(sessions);total.hours=Math.round(total.minutes/6)/10;
-      return {total,week:sumFor(sessions.filter(s=>dateOnly(s)>=wStart)),month:sumFor(sessions.filter(s=>dateOnly(s)>=monthStart)),last30:sumFor(sessions.filter(s=>dateOnly(s)>=last30)),today:sumFor(sessions.filter(s=>same(dateOnly(s),todayDate))),streak_days:streak,daily_step_goal:Number(state.settings.daily_step_goal)||10000};
+      const last30Stats=sumFor(sessions.filter(s=>dateOnly(s)>=last30));
+      const prev30Stats=sumFor(sessions.filter(s=>dateOnly(s)>=prev30Start&&dateOnly(s)<prev30End));
+      return {total,week:sumFor(sessions.filter(s=>dateOnly(s)>=wStart)),month:sumFor(sessions.filter(s=>dateOnly(s)>=monthStart)),last30:last30Stats,prev30:prev30Stats,today:sumFor(sessions.filter(s=>same(dateOnly(s),todayDate))),streak_days:streak,active_days:active.size,daily_step_goal:Number(state.settings.daily_step_goal)||10000};
     }
     function last7Data(){
       const out=[],now=new Date();now.setHours(0,0,0,0);
       for(let i=6;i>=0;i--){const d=new Date(now);d.setDate(d.getDate()-i);const key=dayKey(d),km=state.sessions.filter(s=>dayKey(sessionDate(s))===key).reduce((a,s)=>a+Number(s.distance_km),0);out.push({label:["D","L","M","M","J","V","S"][d.getDay()],value:km})}
       return out
     }
-    function weeklyData(){
-      const out=[],current=weekStart(new Date());
-      for(let i=7;i>=0;i--){const start=new Date(current);start.setDate(start.getDate()-i*7);const end=new Date(start);end.setDate(end.getDate()+7);const km=state.sessions.filter(s=>{const d=sessionDate(s);return d>=start&&d<end}).reduce((a,s)=>a+Number(s.distance_km),0);out.push({label:String(start.getDate())+"/"+String(start.getMonth()+1),value:km})}
+    function periodBuckets(metric){
+      const now=new Date(),sessions=state.sessions;
+      if(state.range==="8w"){
+        const out=[],current=weekStart(now);
+        for(let i=7;i>=0;i--){const start=new Date(current);start.setDate(start.getDate()-i*7);const end=new Date(start);end.setDate(end.getDate()+7);const items=sessions.filter(s=>{const d=sessionDate(s);return d>=start&&d<end});out.push({label:String(start.getDate())+"/"+String(start.getMonth()+1),value:metric==="minutes"?items.reduce((a,s)=>a+Number(s.duration_minutes||0),0):items.reduce((a,s)=>a+Number(s.distance_km||0),0)})}
+        return out
+      }
+      const months=state.range==="6m"?6:state.range==="1y"?12:Math.max(1,Math.min(24,Math.ceil((now-Math.min(...sessions.map(s=>sessionDate(s).getTime()),now.getTime()))/(1000*60*60*24*30.4))));
+      const out=[];
+      for(let i=months-1;i>=0;i--){const start=new Date(now.getFullYear(),now.getMonth()-i,1),end=new Date(start.getFullYear(),start.getMonth()+1,1),items=sessions.filter(s=>{const d=sessionDate(s);return d>=start&&d<end});out.push({label:start.toLocaleDateString("fr-FR",{month:"short"}),value:metric==="minutes"?items.reduce((a,s)=>a+Number(s.duration_minutes||0),0):items.reduce((a,s)=>a+Number(s.distance_km||0),0)})}
       return out
     }
-    function speedData(){return [...state.sessions].sort((a,b)=>sessionDate(a)-sessionDate(b)).slice(-12).map((s,i)=>({label:String(i+1),value:Number(s.avg_speed_kmh)}))}
+    function sessionsInRange(){
+      const now=new Date(),from=new Date(0);
+      if(state.range==="8w")from.setTime(now.getTime()-56*86400000);
+      if(state.range==="6m")from.setTime(new Date(now.getFullYear(),now.getMonth()-5,1).getTime());
+      if(state.range==="1y")from.setTime(new Date(now.getFullYear()-1,now.getMonth(),1).getTime());
+      return state.sessions.filter(s=>sessionDate(s)>=from).sort((a,b)=>sessionDate(a)-sessionDate(b))
+    }
+    function speedData(){return sessionsInRange().slice(-20).map((s,i)=>({label:String(i+1),value:Number(s.avg_speed_kmh)}))}
+    function weightData(){return sessionsInRange().filter(s=>Number(s.weight_kg)>0).slice(-20).map(s=>({label:sessionDate(s).toLocaleDateString("fr-FR",{day:"2-digit",month:"2-digit"}),value:Number(s.weight_kg)}))}
     function barChart(el,data){
       if(!data.some(x=>x.value>0)){el.innerHTML='<div class="empty"><b>Pas encore de données</b>Enregistre ta première séance.</div>';return}
       const w=500,h=150,p=22,max=Math.max(...data.map(x=>x.value),1),gap=9,bw=(w-p*2-gap*(data.length-1))/data.length;let bars="",labels="";
@@ -199,10 +227,12 @@
     }
     function render(){
       state.stats=computeStats();const st=state.stats;
-      $("#monthKm").textContent=fmt(st.month.distance_km)+" km";$("#monthSessions").textContent=(st.month.sessions||0)+" séance"+((st.month.sessions||0)>1?"s":"");$("#monthTime").textContent=durationLabel(st.month.minutes||0);$("#monthSpeed").textContent=fmt(st.month.avg_speed_kmh)+" km/h";$("#streak").textContent=(st.streak_days||0)+" jour"+((st.streak_days||0)>1?"s":"");
+      $("#monthKm").textContent=fmt(st.month.distance_km)+" km";$("#monthSessions").textContent=(st.month.sessions||0)+" séance"+((st.month.sessions||0)>1?"s":"");$("#monthTime").textContent=durationLabel(st.month.minutes||0);$("#monthSpeed").textContent=fmt(st.month.avg_speed_kmh)+" km/h";$("#weekSessions").textContent=st.week.sessions||0;$("#monthEstimatedKcal").textContent=new Intl.NumberFormat("fr-FR").format(st.month.estimated_kcal||0)+" kcal";$("#monthSteps").textContent=new Intl.NumberFormat("fr-FR").format(st.month.steps||0);$("#streak").textContent=(st.streak_days||0)+" jour"+((st.streak_days||0)>1?"s":"");
       const goal=st.daily_step_goal||10000,steps=st.today.steps||0,pct=Math.min(100,Math.round(steps/goal*100));$("#todaySteps").textContent=new Intl.NumberFormat("fr-FR").format(steps)+" / "+new Intl.NumberFormat("fr-FR").format(goal)+" pas";$("#goalPct").textContent=pct+"%";$("#goalBar").style.width=pct+"%";$("#weekSummary").textContent=fmt(st.week.distance_km)+" km";
-      $("#totalKm").textContent=fmt(st.total.distance_km)+" km";$("#totalHours").textContent=fmt(st.total.hours)+" h";$("#totalSessions").textContent=st.total.sessions||0;$("#last30Km").textContent=fmt(st.last30.distance_km)+" km";
-      barChart($("#homeChart"),last7Data());barChart($("#weeklyChart"),weeklyData());lineChart($("#speedChart"),speedData());renderHistory();
+      $("#totalKm").textContent=fmt(st.total.distance_km)+" km";$("#totalHours").textContent=fmt(st.total.hours)+" h";$("#activeDays").textContent=st.active_days||0;$("#last30Km").textContent=fmt(st.last30.distance_km)+" km";
+      const prev=Number(st.prev30.distance_km||0),cur=Number(st.last30.distance_km||0),delta=prev?Math.round((cur-prev)/prev*100):null;$("#monthDelta").textContent=delta===null?"pas assez d’historique":(delta>=0?"+":"")+delta+" % vs 30 j précédents";
+      $("#rangeLabel").textContent=state.range==="8w"?"8 semaines":state.range==="6m"?"6 mois":state.range==="1y"?"1 an":"historique";
+      barChart($("#homeChart"),last7Data());barChart($("#weeklyChart"),periodBuckets("distance"));barChart($("#minutesChart"),periodBuckets("minutes"));lineChart($("#speedChart"),speedData());lineChart($("#weightChart"),weightData());renderHistory();
       $("#goalInput").value=state.settings.daily_step_goal||10000;$("#weightInput").value=state.settings.current_weight_kg??"";$("#targetWeightInput").value=state.settings.target_weight_kg??"";
     }
     function load(){
@@ -213,7 +243,7 @@
       const min=Number($("#duration").value),km=Number($("#distance").value);if(!min||!km){$("#calcSpeed").textContent="—";$("#calcPace").textContent="—";return}
       $("#calcSpeed").textContent=fmt(km/(min/60))+" km/h";$("#calcPace").textContent=paceText(min,km);
     }
-    qsa(".nav button").forEach(b=>b.addEventListener("click",()=>switchView(b.dataset.view)));
+    qsa(".nav button").forEach(b=>b.addEventListener("click",()=>switchView(b.dataset.view)));\n    qsa("#rangeSelector button").forEach(b=>b.addEventListener("click",()=>{state.range=b.dataset.range;qsa("#rangeSelector button").forEach(x=>x.classList.toggle("active",x===b));render()}));
     $("#openSession").addEventListener("click",()=>{$("#startedAt").value=localDateTime();$("#sessionDialog").showModal()});
     $("#closeSession").addEventListener("click",()=>$("#sessionDialog").close());
     ["duration","distance"].forEach(id=>$("#"+id).addEventListener("input",updateCalc));
@@ -236,6 +266,9 @@
       const file=e.target.files?.[0];if(!file)return;
       try{const data=JSON.parse(await file.text());if(!Array.isArray(data.sessions))throw new Error("Format invalide");if(!confirm("Remplacer les données actuelles par cette sauvegarde ?"))return;writeJSON(SESSION_KEY,data.sessions);writeJSON(SETTINGS_KEY,data.settings||{});load();showToast("Sauvegarde importée ✓")}catch(err){showToast("Fichier de sauvegarde invalide")}finally{e.target.value=""}
     });
+    window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstallPrompt=e;$("#installCard").classList.add("show")});
+    $("#installApp").addEventListener("click",async()=>{if(!deferredInstallPrompt){showToast("Installation disponible via le menu du navigateur");return}deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;$("#installCard").classList.remove("show")});
+    window.addEventListener("appinstalled",()=>{$("#installCard").classList.remove("show");showToast("StepFlix installé ✓")});
     if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js").catch(console.error);
     load();
   </script>
